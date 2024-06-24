@@ -19,7 +19,7 @@ An accompanying document, **Modular MIDI Conventions for Musicians**, is a more 
 
 Modular MIDI only adds conventions to standard MIDI.  It does not break or significantly deviate from any MIDI standards, and everything below can be implemented as standard non-Sysex MIDI messages.  Here are the major differences:
 
-- **Hardware.**  Modular MIDI runs over a new transport: the cabling between modules in a modular synthesizer.  In AE Modular, it presently runs at 31250 bps over basic TTL serial.  Unlike traditional MIDI, it does not require optoisolation as all the devices share common ground and power.  Hardware MIDI THRU can be achieved through a simple op-amp.
+- **Hardware.**  Modular MIDI runs over a new transport: the cabling between modules in a modular synthesizer.  In AE Modular, it presently runs at 31250 bps over basic TTL serial.  Unlike traditional MIDI, it does not require optoisolation as all the devices share common ground and power.  Hardware MIDI THRU can be achieved through a simple buffer.
 
 - **CC Parameters.**  Modular MIDI divides the CC space into regions assigned to **IDs**.  Each module listening in on a given channel is given a unique ID, and controls the CC space for that ID.  This is a conflict avoidance mechanism.  It is not a hard-and-fast rule: if a module has complete control over a channel, it can do as it pleases.  Modular MIDI also supports many, but not all, of the common MIDI CC parameters.
 
