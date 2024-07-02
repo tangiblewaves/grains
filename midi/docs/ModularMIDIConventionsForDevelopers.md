@@ -19,7 +19,7 @@ An accompanying document, **Modular MIDI Conventions for Musicians**, is a more 
 
 Modular MIDI only adds conventions to standard MIDI.  It does not break or significantly deviate from any MIDI standards, and everything below can be implemented as standard non-Sysex MIDI messages.  Here are the major differences:
 
-- **Hardware.**  Modular MIDI runs over a new transport: the cabling between modules in a modular synthesizer.  In AE Modular, it presently runs at 31250 bps over basic TTL serial.  Unlike traditional MIDI, it does not require optoisolation as all the devices share common ground and power.  Hardware MIDI THRU can be achieved through a simple op-amp.
+- **Hardware.**  Modular MIDI runs over a new transport: the cabling between modules in a modular synthesizer.  In AE Modular, it presently runs over basic TTL serial at 31250 bps or optionally 125000 bps.  Unlike traditional MIDI, it does not require optoisolation as all the devices share common ground and power.  Hardware MIDI THRU can be achieved through a simple digital buffer.
 
 - **CC Parameters.**  Modular MIDI divides the CC space into regions assigned to **IDs**.  Each module listening in on a given channel is given a unique ID, and controls the CC space for that ID.  This is a conflict avoidance mechanism.  It is not a hard-and-fast rule: if a module has complete control over a channel, it can do as it pleases.  Modular MIDI also supports many, but not all, of the common MIDI CC parameters.
 
@@ -39,7 +39,7 @@ There are no requirements placed on hardware transport or speed, except that a g
 
 ### Example Transport Hardware: AE Modular
 
-In the AE Modular system, MIDI arrives to the modular synthesizer via standard hardware: either a 5-pin DIN MIDI jack, a TRS MIDI jack, or USB.  There are special rules regarding MIDI electronics which must be followed (such as optoisolation).
+In the AE Modular system, MIDI arrives to the modular synthesizer via standard hardware: TRS MIDI jack (Type-A/-B agnostic), or USB-C.  There are special rules regarding MIDI electronics which must be followed (such as optoisolation).
 
 Once inside the system, MIDI is transferred from module to module as a simple 5V TTL Serial connection between two standard sockets on the modules.
 
@@ -49,11 +49,11 @@ Within a modular system, all modules should send MIDI at the same speed.  This s
 
 ### How Modules are Connected
 
-We presume that in most cases, a modular setup would have a **distributor module**, which receives external MIDI, breaks it up it per-channel, and outputs messages for each channel via per channel AE modular sockets.  Non-voiced data (like clock) are ideally copied to every channel socket.  Attached to each socket is a chain of one more **receiever modules** meant to respond to messages on that channel.  These receiver modules typically are set up to be OMNI.  A distributor module should also just output *all* its incoming MIDI via a general-purpose **THRU**.
+We presume that in most cases, a modular setup would have a **distributor module**, which receives external MIDI, breaks it up per-channel(s) and other criteria like e.g. note ranges into a number of outputs, and sends the filtered messages according to the criteria for each output via the standard patch sockets of the modular format.  Non-voiced data (like clock) are ideally copied to every channel socket.  Attached to each socket is a chain of one more **receiver modules** meant to respond to messages on that channel.  These receiver modules typically are set up to be OMNI and handle all receieved messages. A distributor module should also just output *all* its incoming MIDI via a general-purpose **THRU**.
 
 * Every receiver module should have at least one (and usually only one) **IN** socket from which it receives MIDI data.  It is suggested that the distributor also have an **IN** socket, either receive data from external MIDI or from the in socket, in a switchable manner.
 
-* Generally a receiver should have at least one **THRU** socket where the data from the **IN** socket is passed through unmolested.  This should be done by simply buffering the IN signal via an op-amp and re-broadcasting it out THRU. Buffering would have essentially no latency.  THRU allows multiple modules to easily be chained together to listen to the same channel.
+* Generally a receiver should have at least one **THRU** socket where the data from the **IN** socket is passed through unmolested.  This should be done by simply buffering the IN signal via a digital buffer and re-broadcasting it out THRU. Buffering would have essentially no latency.  THRU allows multiple modules to easily be chained together to listen to the same channel.
 
 * A receiver can receive multiple channels if it's designed to do that, though this is unusual.  It could do this via multiple incoming **IN** sockets, one per channel, or by attaching to the distributor's THRU to receive all MIDI, and sifting through it on its own.
 
