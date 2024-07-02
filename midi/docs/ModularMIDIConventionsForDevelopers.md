@@ -45,7 +45,8 @@ Once inside the system, MIDI is transferred from module to module as a simple 5V
 
 ### Speed
 
-Within a modular system, all modules should send MIDI at the same speed.  This speed should be at least 31250 bits per second, though it can be faster.
+Within a modular system, all modules should send MIDI at the same speed.  This speed should be at least 31250 bits per second, though it can be faster. A set of allowed data rates is defined; at the moment this is 31250 bps (standard MIDI rate) and 125000 bps. A higher rate might be added in the future.
+It's recommended to establish a set of allowed data rates across all modular formats, to allow interoperability. 
 
 ### How Modules are Connected
 
